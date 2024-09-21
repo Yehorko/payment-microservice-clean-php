@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  php:
+    image: php:8.3-fpm
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: php-b-soft-tz
+    volumes:
+      - ./:/var/www
+    ports:
+      - "8124:80"
+    networks:
+      - b-soft-tz-network
+    environment:
+      PHP_INI_DISPLAY_ERRORS: "1"
+      PHP_INI_MEMORY_LIMIT: "512M"
+
+networks:
+  b-soft-tz-network:
+    driver: bridge
