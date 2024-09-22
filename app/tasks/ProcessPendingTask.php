@@ -10,7 +10,7 @@ class ProcessPendingTask {
      * @param RequestModelAbstract $requestModel
      * @return ProcessPendingTask
      */
-    public function __construct__(RequestModelAbstract $requestModel): self
+    public function __construct(RequestModelAbstract $requestModel)
     {
         $this->requestModel = $requestModel;
 
@@ -36,6 +36,9 @@ class ProcessPendingTask {
             'request_data' => $this->requestModel->getOrderOriginalData()
         ]);
         $transaction->save();
+        $wallet = $order->user()->wallet();
+
+        echo PHP_EOL . "NEW USER WALLET STATE:" . var_export($wallet->getData(), true) . PHP_EOL;
         // User balance not changed
     }
 }

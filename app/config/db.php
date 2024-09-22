@@ -2,8 +2,8 @@
 
 return [
     'host' => 'db',
-    'db' => 'payments',
-    'user' => 'San-Pedro',
-    'pass' => '112358',
+    'db' => getenv('MYSQL_DATABASE'),
+    'user' => getenv('MYSQL_USER'),
+    'pass' => getenv('MYSQL_PASSWORD'),
     'charset' => 'utf8mb4',
 ];

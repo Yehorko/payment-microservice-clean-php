@@ -10,7 +10,7 @@ use PDOException;
  * но так делать конечно-же не надо :)
  */
 class BaseModel {
-    private string $tableName = '';
+    protected string $tableName;
     private Db $db;
     protected string $primary = 'id';
     protected array $data = [];
@@ -18,10 +18,10 @@ class BaseModel {
     /**
      * @return self
      */
-    public function __construct__(): self
+    public function __construct()
     {
         $this->db = Db::getInstance();
-        return new self;
+        return $this;
     }
     public function findOne(array $query): ?self{
         $conditions = [];
@@ -36,6 +36,7 @@ class BaseModel {
 
         try {
             $sql = "SELECT * FROM {$this->tableName} WHERE {$conditionString} LIMIT 1";
+
             $stmt = $this->db->connection->prepare($sql);
             $stmt->execute($params);
             $result = $stmt->fetch();
@@ -47,7 +48,7 @@ class BaseModel {
             }
 
         } catch (PDOException $e) {
-            echo "Db ERROR: " . $e->getMessage();
+            throw new \Exception(PHP_EOL . "Db ERROR: " . $e->getMessage() . PHP_EOL);
         }
 
         return $this;
@@ -60,6 +61,14 @@ class BaseModel {
         }
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        return $this->data;
     }
 
     public function getFieldValue($fieldName)
@@ -88,8 +97,9 @@ class BaseModel {
             if (!empty($this->data[$this->getPrimaryKey()])) {
                 // Update record
                 $updateStatementString = implode(',', $updateStatement);
-                $updateQuery = "UPDATE TABLE {$this->tableName} SET {$updateStatementString})"
+                $updateQuery = "UPDATE {$this->tableName} SET {$updateStatementString}"
                     . ' WHERE ' . $this->getPrimaryKey() . ' = ' . $this->data[$this->getPrimaryKey()];
+//                var_dump($updateQuery);die;
                 $stmt = $this->db
                     ->connection
                     ->prepare($updateQuery);
@@ -104,7 +114,7 @@ class BaseModel {
             $lastInsertId = $this->db->connection->lastInsertId();
             $this->data[$this->getPrimaryKey()] = $lastInsertId;
         } catch (PDOException $e) {
-                echo "Db ERROR: " . $e->getMessage();
+                throw new \Exception(PHP_EOL . "Db ERROR: " . $e->getMessage() . PHP_EOL);
         }
     }
 }

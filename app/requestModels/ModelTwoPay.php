@@ -1,16 +1,16 @@
 <?php
 namespace app\requestModels;
-class ModelOnePay extends RequestModelAbstract {
-    protected const STATUS_COMPLETE = 'complete';
-    protected const STATUS_PENDING = 'pending';
-    protected const STATUS_REFUNDED = 'refunded';
+class ModelTwoPay extends RequestModelAbstract {
+    protected const STATUS_COMPLETE = 2;
+    protected const STATUS_PENDING = 4;
+    protected const STATUS_FAILED = 3;
 
     /**
      * @return string
      */
     public function getOrderId(): string
     {
-        return $this->originalData['userOrderId'] ?? '';
+        return $this->originalData['orderId'] ?? '';
     }
 
     /**
@@ -18,7 +18,7 @@ class ModelOnePay extends RequestModelAbstract {
      */
     public function getExternalTransactionId(): string
     {
-        return $this->originalData['transactionId'] ?? '';
+        return $this->originalData['identifier'] ?? '';
     }
 
     /**
@@ -32,7 +32,7 @@ class ModelOnePay extends RequestModelAbstract {
     /**
      * @return int
      */
-    public function getOrderCurrency(): int
+    public function getOrderCurrency(): string
     {
         return $this->originalData['currency'] ?? '';
     }
@@ -50,7 +50,7 @@ class ModelOnePay extends RequestModelAbstract {
      */
     public function isComplete(): bool
     {
-        $status = $this->originalData['status'] ?? '';
+        $status = $this->originalData['state'] ?? '';
 
         return $status === self::STATUS_COMPLETE;
     }
@@ -60,7 +60,7 @@ class ModelOnePay extends RequestModelAbstract {
      */
     public function isPending(): bool
     {
-        $status = $this->originalData['status'] ?? '';
+        $status = $this->originalData['state'] ?? '';
 
         return $status === self::STATUS_PENDING;
     }
@@ -70,9 +70,7 @@ class ModelOnePay extends RequestModelAbstract {
      */
     public function isRefund(): bool
     {
-        $status = $this->originalData['status'] ?? '';
-
-        return $status === self::STATUS_REFUNDED;
+        return false;
     }
 
     /**
@@ -80,6 +78,8 @@ class ModelOnePay extends RequestModelAbstract {
      */
     public function isFailed(): bool
     {
-        return false;
+        $status = $this->originalData['state'] ?? '';
+
+        return $status === self::STATUS_FAILED;
     }
 }

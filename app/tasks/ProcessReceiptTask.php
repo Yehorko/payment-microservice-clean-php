@@ -10,7 +10,7 @@ class ProcessReceiptTask {
      * @param RequestModelAbstract $requestModel
      * @return ProcessReceiptTask
      */
-    public function __construct__(RequestModelAbstract $requestModel): self
+    public function __construct(RequestModelAbstract $requestModel)
     {
         $this->requestModel = $requestModel;
 
@@ -41,5 +41,7 @@ class ProcessReceiptTask {
         $balance = $wallet->getFieldValue('balance');
         $balance += $this->requestModel->getOrderAmount();
         $wallet->setFields(['balance' => $balance])->save();
+
+        echo PHP_EOL . "NEW USER WALLET STATE:" . var_export($wallet->getData(), true) . PHP_EOL;
     }
 }

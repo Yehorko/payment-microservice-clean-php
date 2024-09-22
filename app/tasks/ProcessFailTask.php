@@ -10,7 +10,7 @@ class ProcessFailTask {
      * @param RequestModelAbstract $requestModel
      * @return ProcessFailTask
      */
-    public function __construct__(RequestModelAbstract $requestModel): self
+    public function __construct(RequestModelAbstract $requestModel)
     {
         $this->requestModel = $requestModel;
 
@@ -37,5 +37,8 @@ class ProcessFailTask {
         ]);
         $transaction->save();
         // User balance not changed
+        $wallet = $order->user()->wallet();
+
+        echo PHP_EOL . "NEW USER WALLET STATE:" . var_export($wallet->getData(), true) . PHP_EOL;
     }
 }

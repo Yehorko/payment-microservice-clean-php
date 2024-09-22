@@ -15,8 +15,8 @@ class Db {
 
         return self::$instance;
     }
-    private function __construct__(){
-        $dbConfig = require_once("../config/db.php");
+    private function __construct(){
+        $dbConfig = require_once(__DIR__ . "/../config/db.php");
         $dsn = "mysql:host={$dbConfig['host']};dbname={$dbConfig['db']};charset={$dbConfig['charset']}";
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

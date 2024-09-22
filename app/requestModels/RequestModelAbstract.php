@@ -22,7 +22,7 @@ abstract class RequestModelAbstract {
      * @return void
      * @throws Exception
      */
-    public function __construct__(string $originalRequestData) {
+    public function __construct(array $originalRequestData) {
         $this->setOrderOriginalData($originalRequestData);
         $this->validate();
     }
@@ -39,7 +39,7 @@ abstract class RequestModelAbstract {
     /**
      * @return int
      */
-    abstract public function getOrderCurrency(): int;
+    abstract public function getOrderCurrency(): string;
 
     /**
      * @return string
@@ -72,12 +72,8 @@ abstract class RequestModelAbstract {
      * @return void
      * @throws Exception
      */
-    protected function setOrderOriginalData(string $originalData): void{
-        $data = @json_decode($originalData, true);
-        if (!$data) {
-            throw new Exception(self::ERR_ORIGINAL_DATA_IS_INCORRECT);
-        }
-        $this->originalData = $data;
+    protected function setOrderOriginalData(array $originalData): void{
+        $this->originalData = $originalData;
     }
 
     /**

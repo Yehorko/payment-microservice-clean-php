@@ -31,7 +31,7 @@ class ModelThreePay extends RequestModelAbstract {
     /**
      * @return int
      */
-    public function getOrderCurrency(): int
+    public function getOrderCurrency(): string
     {
         return self::CURRENCY_USD;
     }

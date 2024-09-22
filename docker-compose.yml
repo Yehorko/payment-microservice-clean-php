@@ -16,6 +16,25 @@ services:
     environment:
       PHP_INI_DISPLAY_ERRORS: "1"
       PHP_INI_MEMORY_LIMIT: "512M"
+      MYSQL_DATABASE: payment
+      MYSQL_USER: payment
+      MYSQL_PASSWORD: msdrf(*$)#kjls
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: xsx^&^&*09890jhj
+      MYSQL_DATABASE: payment
+      MYSQL_USER: payment
+      MYSQL_PASSWORD: msdrf(*$)#kjls
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - b-soft-tz-network
+
 
 networks:
   b-soft-tz-network:
